@@ -14,24 +14,24 @@ class AShootingProjectile : public AActor
 {
 	GENERATED_BODY()
 
-	/** Sphere collision component */
+	/** 球体衝突コンポーネント */
 	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
 	USphereComponent* CollisionComp;
 
-	/** Projectile movement component */
+	/** 発射体移動コンポーネント */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
 public:
 	AShootingProjectile();
 
-	/** called when projectile hits something */
+	/** 弾丸が何かに当たったときに呼ばれる */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	/** Returns CollisionComp subobject **/
+	/** CollisionComp サブオブジェクトを返します。 **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
-	/** Returns ProjectileMovement subobject **/
+	/** ProjectileMovement サブオブジェクトを返します。 **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 };
 

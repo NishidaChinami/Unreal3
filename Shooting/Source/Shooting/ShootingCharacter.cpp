@@ -55,7 +55,7 @@ void AShootingCharacter::BeginPlay()
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
-// Å´à”ñ°ÇÌÇ©ÇÁÇÒ
+// 
 void AShootingCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings

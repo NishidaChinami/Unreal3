@@ -13,6 +13,8 @@
 class USkeletalMeshComponent;
 class UCameraComponent;
 
+// ジャンプ操作、作成から
+
 UCLASS()
 class SHOOTING_API APlayerCharacter : public ACharacter
 {
@@ -30,9 +32,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
+	// 移動入力
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
 
+	// ジャンプ入力
+	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> JumpAction;
+
+	// 視点移動入力
+	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> LookAction;
+
+	// 体力
 	float Life = 100.0f;
 
 public:
@@ -42,6 +54,16 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// 移動関数
+	void Move(const FInputActionValue& Value);
+
+	// ジャンプ関数
+	void StartJump();
+	void StopJump();
+
+	// 視点移動関数
+	void Look(const FInputActionValue& Value);
 
 public:	
 	// Called every frame

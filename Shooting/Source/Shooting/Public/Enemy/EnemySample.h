@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 
 
-class UStaticMeshComponent;
+class USkeletalMeshComponent;
 class USpringArmComponent;
 class USphereComponent;
 
@@ -30,32 +30,46 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	class UPawnSensingComponent* PawnSensingComp;
+
+	UFUNCTION()
+	void OnSeePlayer(APawn* Pawn);
+
+public :
+	//コリジョン用
+	UPROPERTY(VisibleAnywhere, Category = Goal, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USphereComponent>SphereCollition;
+	class USphereComponent* GetSphereCollition()const { return SphereCollition; }
+
 private:
-	//Enemyのメッシュ（スキン）
-	UPROPERTY(VisibleAnyWhere, Category = Character, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UStaticMeshComponent> Zombie;
-	//体の向きを取得
 
 	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	//コリジョン用
-	UPROPERTY(VisibleAnywhere, Category = Goal, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USphereComponent>Sphere;
 
+public:
 //関数群
 	UFUNCTION()
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-	UFUNCTION()
 	void ReceiveAnyDamage(float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	UFUNCTION(BlueprintCallable)
+	void StartAnim();
 
+	UFUNCTION(BlueprintCallable)
+	void EndAnim();
 //　変数群
 public:
 	UPROPERTY(EditAnywhere)
 	float Health = 100;
+	UPROPERTY(EditAnywhere)
+	float MaxHealth = 100;
 private:
+	UPROPERTY(EditAnywhere, Category = Enemy)
 	float HealthPercentage = 1;
-	float EnemyDamege = 15;
+	UPROPERTY(EditAnywhere, Category = Enemy)
+	float EnemyDamage = 15.f;
 
 };

@@ -27,6 +27,8 @@ public:
 	UFUNCTION()
 	APlayerCharacter* GetPlayerKey();
 
+
+
 	UPROPERTY()
 	UBehaviorTreeComponent* BehaviorComp;
 
@@ -45,9 +47,13 @@ protected:
 
 	virtual void BeginPlay() override;
 
+
+
 	UPROPERTY(EditDefaultsOnly, Category = AI)
 	class UBehaviorTree* BehaviorTree;
 
 	FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp() const { return BehaviorComp; }
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
+
+	
 };

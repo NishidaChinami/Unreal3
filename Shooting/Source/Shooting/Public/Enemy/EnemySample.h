@@ -11,6 +11,9 @@ class USpringArmComponent;
 class USphereComponent;
 
 #include "EnemySample.generated.h"
+
+
+
 UCLASS()
 class SHOOTING_API AEnemySample : public ACharacter
 {
@@ -60,7 +63,22 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EndAnim();
-//　変数群
+
+	//UFUNCTION(BlueprintPure, Category = Attack)
+	//bool CanAttackEnemyWithMode(const AActor* const Enemy, const FAttackMode& AMode, int32& OutModeIndex) const;
+
+	//// 攻撃可能かどうかを判定
+	//UFUNCTION(BlueprintPure, Category = Attack)
+	//bool CanAttackEnemyWithModeName(const AActor* const Enemy, FName ModeName, int32& OutModeIndex) const;
+	//UFUNCTION(BlueprintCallable, Category = Attack)
+	//void AttackEnemyWithModeName(const AActor* const Enemy, FName ModeName);
+	//
+	////攻撃アニメーション
+	//UFUNCTION()
+	//void SetCurrentAttackMode(FName NewAttackMode);
+	
+	
+	//　変数群
 public:
 	UPROPERTY(EditAnywhere)
 	float Health = 100;
@@ -73,3 +91,4 @@ private:
 	float EnemyDamage = 15.f;
 
 };
+

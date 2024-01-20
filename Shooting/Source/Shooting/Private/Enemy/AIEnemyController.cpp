@@ -3,6 +3,8 @@
 
 #include "Enemy/AIEnemyController.h"
 #include "UObject/ConstructorHelpers.h"
+#include <BehaviorTree/BlackboardComponent.h>
+#include <Kismet/GameplayStatics.h>
 
 AAIEnemyController::AAIEnemyController(const class FObjectInitializer& ObjectInitializer) {
 
@@ -10,7 +12,8 @@ AAIEnemyController::AAIEnemyController(const class FObjectInitializer& ObjectIni
 	BlackboardComp = ObjectInitializer.CreateDefaultSubobject<UBlackboardComponent>(this, TEXT("BlackboardComp"));
 
 	// 作成したビヘイビアツリーを設定
-	ConstructorHelpers::FObjectFinder<UBehaviorTree> BTFinder(TEXT("/Game/EnemyBP/Mutant/BT_Mutant.BT_Mutant"));
+	ConstructorHelpers::FObjectFinder<UBehaviorTree> BTFinder(TEXT("/Game/EnemyBP/Mutant/BT_Mutant"));
+
 	BehaviorTree = BTFinder.Object;
 
 	PlayerKeyName = "Player";
@@ -19,6 +22,12 @@ AAIEnemyController::AAIEnemyController(const class FObjectInitializer& ObjectIni
 void AAIEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
+	// BlackboardにプレイヤーをTaragetActorとして登録
+	auto pBlackBoard = GetBlackboardComponent();
+	if (pBlackBoard)
+	{
+		pBlackBoard->SetValueAsObject(TEXT("TargetActor"), UGameplayStatics::GetPlayerPawn(this, 0));
+	}
 }
 void AAIEnemyController::OnPossess(APawn* InPawn) {
 	Super::OnPossess(InPawn);
@@ -48,3 +57,4 @@ APlayerCharacter* AAIEnemyController::GetPlayerKey()
 
 	return Cast<APlayerCharacter>(BlackboardComp->GetValueAsObject(PlayerKeyName));
 }
+

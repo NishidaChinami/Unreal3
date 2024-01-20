@@ -100,4 +100,10 @@ void AEnemySample::OnSeePlayer(APawn* Pawn)
 }
 
 
-
+//bool AEnemySample::CanAttackEnemyWithModeName(const AActor* const Enemy, FName ModeName, int32& OutModeIndex) const
+//{
+//	FAttackMode am = FAttackMode();
+//	am.Name = ModeName;
+//
+//	return CanAttackEnemyWithMode(Enemy, am, OutModeIndex);
+//}

@@ -7,8 +7,9 @@
 #include "EnemyNotifyState.generated.h"
 
 /**
-* Enemy用アニメーションステート
- * 
+ * 作成者　西田
+ * 作成日12月9日
+ * 内容　敵の攻撃のAnimationNotify
  */
 UCLASS(editinlinenew, Blueprintable,const,hidecategories = Object, collapsecategories, meta = (ShowWorldContextPin, DisplayName = "EnemyNotify"))
 class SHOOTING_API UEnemyNotifyState : public UAnimNotifyState

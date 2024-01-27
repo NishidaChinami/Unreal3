@@ -12,7 +12,11 @@ class USphereComponent;
 
 #include "EnemySample.generated.h"
 
-
+/**
+ * 作成者　西田
+ * 作成日11月18日,12月2日
+ * 内容　敵のメッシュの描画、敵自体のダメージ判定、攻撃の判定
+ */
 
 UCLASS()
 class SHOOTING_API AEnemySample : public ACharacter

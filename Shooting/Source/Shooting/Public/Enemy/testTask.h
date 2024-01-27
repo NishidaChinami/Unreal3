@@ -8,7 +8,9 @@
 #include "testTask.generated.h"
 
 /**
- * 
+ * 作成者　西田
+ * 作成日1月20日
+ * 内容　敵のBehaviorTreeの移動タスク
  */
 UCLASS()
 class SHOOTING_API UtestTask : public UBTTask_BlackboardBase
@@ -30,5 +32,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0.0", UIMin = "0.0"))
 	float acceptableRadius = 100.0f;
+	float speed_delay = 0.3f;
 };
 

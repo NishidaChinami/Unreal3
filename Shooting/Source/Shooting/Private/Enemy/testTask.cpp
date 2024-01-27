@@ -20,7 +20,7 @@ UtestTask::UtestTask() :Super()
 
 EBTNodeResult::Type UtestTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	auto pBlackboard = OwnerComp.GetBlackboardComponent();;
+	auto pBlackboard = OwnerComp.GetBlackboardComponent();
 	auto pKeyValue = pBlackboard->GetValue<UBlackboardKeyType_Object>(BlackboardKey.GetSelectedKeyID());
 	pTarget = Cast<APawn>(pKeyValue);
 
@@ -35,6 +35,7 @@ void UtestTask::OnGameplayTaskActivated(UGameplayTask& Task)
 
 void UtestTask::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	//“G‚ÌAI‚Æ“GŽ©‘Ì‚ÌŽæ“¾
 	auto pController = OwnerComp.GetAIOwner();
 	auto pOwner = pController->GetPawn();
 
@@ -46,7 +47,7 @@ void UtestTask::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, f
 
 		if (!movement.IsZero())
 		{
-			pOwner->AddMovementInput(movement);
+			pOwner->AddMovementInput(movement, speed_delay);
 		}
 	}
 	else

@@ -10,9 +10,10 @@
 #include "Player/PlayerCharacter.h"
 
 #include "AIEnemyController.generated.h"
-
 /**
- * Enemy用AIコントローラー
+ * 作成者　西田
+ * 作成日1月13日
+ * 内容　敵のAI 敵の視野角
  */
 UCLASS()
 class SHOOTING_API AAIEnemyController : public AAIController

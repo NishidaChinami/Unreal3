@@ -11,6 +11,13 @@
 #include "InputActionValue.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+
+// ==================================================================
+// 作成：前 匠人
+// 作成日：2023 / 11 / 18
+// 
+// 2023 / 12 / 9 移動、ジャンプ追加
+// ==================================================================
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -49,6 +56,9 @@ APlayerCharacter::APlayerCharacter()
 	// 入力アクション「IA_Look」を読み込む
 	LookAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/Player/BluePrints/Input/Action/IA_Look"));
 
+	// 入力アクション「IA_Fire」を読み込む
+	FireAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/Player/BluePrints/Input/Action/IA_Fire"));
+
 }
 
 // Called when the game starts or when spawned
@@ -69,7 +79,7 @@ void APlayerCharacter::BeginPlay()
 
 	// デバッグメッセージを5秒間表示する。
 	// Key "の値が-1であれば、メッセージの更新やリフレッシュは行われない。
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("We are using PlayerCharacter."));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("We are using PlayerCharacter."));
 	
 }
 
@@ -98,12 +108,17 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// PlayerCharacterとIA_LookのTriggeredをBindする
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 
+		// PlayerCharacterとIA_LookのTriggeredをBindする
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &APlayerCharacter::Fire);
+
 	}
 }
 
 void APlayerCharacter::ReceiveAnyDamage(float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("プレイヤーに当たりました"));
+	// デバッグ
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("プレイヤーに当たりました"));
+	
 	// UKismetSystemLibrary::PrintString(this, "プレイヤーに当たりました", true, true, FColor::Cyan, 2.f, TEXT("None"));
 }
 
@@ -149,5 +164,51 @@ void APlayerCharacter::Look(const FInputActionValue& Value) {
 		//FRotator ControlRotate = GetControlRotation();
 
 		//UGameplayStatics::GetPlayerController(this, 0)->SetControlRotation(FRotator(ControlRotate.Pitch, ControlRotate.Yaw, 0.0f));
+	}
+}
+
+// 弾発射関数
+void APlayerCharacter::Fire() 
+{
+	// Attemppt to fire a projectile
+	if (ProjectileClass) {
+
+		// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Fire."));
+
+		// Get the Camera transform
+		FVector CameraLocation;
+		FRotator CameraRotation;
+
+		GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+		// Set MuzzleOffset to spawn projectile slightly in front of the camera.
+		MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
+
+		// Transform MuzzleOffset from camera space to world space.
+		FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+
+		// Skew the aim to be slightly upwards.
+		// 狙いをやや上向きに傾ける。
+		FRotator MuzzleRotation = CameraRotation;
+		MuzzleRotation.Pitch += 10.0f;
+
+		UWorld* World = GetWorld();
+		if (World) {
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = GetInstigator();
+
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Fire. = spawn"));
+			// Spawn the projectile at the muzzle.
+			AFPSProjectile* Projectile = World->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
+
+			if (Projectile) {
+				// Set the projectile's initial trajectory.
+				FVector LaunchDirection = MuzzleRotation.Vector();
+				Projectile->FireInDirection(LaunchDirection);
+
+			}
+		}
+
 	}
 }

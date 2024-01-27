@@ -7,14 +7,19 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "InputActionValue.h"
+#include "../Projectile/FPSProjectile.h"
 #include "PlayerCharacter.generated.h"
 
 
 class USkeletalMeshComponent;
 class UCameraComponent;
 
-// ジャンプ操作、作成から
-
+// ==================================================================
+// 作成：前 匠人
+// 作成日：2023 / 11 / 18
+// 
+// 2023 / 12 / 9 移動、ジャンプ追加
+// ==================================================================
 UCLASS()
 class SHOOTING_API APlayerCharacter : public ACharacter
 {
@@ -44,6 +49,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
+	// 発射入力
+	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> FireAction;
+
 	// 体力
 	float Life = 100.0f;
 
@@ -65,6 +74,11 @@ protected:
 	// 視点移動関数
 	void Look(const FInputActionValue& Value);
 
+protected:
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AFPSProjectile> ProjectileClass;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -76,5 +90,15 @@ public:
 	float getLife() { return Life; }
 
 	void ReceiveAnyDamage(float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	// Function that handles firing projectiles.
+	UFUNCTION()
+	void Fire();
+
+public:
+	// Gun muzzle offset from the camera location.
+	// カメラ位置からの銃口オフセット。
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	FVector MuzzleOffset;
 
 };
